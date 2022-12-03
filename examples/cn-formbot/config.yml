@@ -1,0 +1,21 @@
+recipe: default.v1
+language: zh
+
+pipeline:
+  - name: JiebaTokenizer #WhitespaceTokenizer
+  - name: LanguageModelFeaturizer
+    # Name of the language model to use
+    model_name: "bert"
+    # Pre-Trained weights to be loaded
+    # model_weights: "hfl/chinese-roberta-wwm-ext"
+  - name: CRFEntityExtractor
+  - name: CountVectorsFeaturizer
+    token_pattern: (?u)\b\w+\b
+  - name: DIETClassifier
+    epochs: 50
+
+policies:
+  - name: TEDPolicy
+    epochs: 20
+  - name: AugmentedMemoizationPolicy
+  - name: RulePolicy
